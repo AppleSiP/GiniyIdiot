@@ -13,7 +13,7 @@ namespace GeniyIdiotConsoleApp
             questions[3] = "Укол делают каждые полчаса. Сколько нужно минут, чтобы сделать три укола?";
             questions[4] = "Пять свечей горело, две потухли. Сколько свечей осталось?";
             return questions;
-        }
+        }// Список вопросов
         static int[] GetAnswers(int countQuestions)
         {
             int[] answers = new int[countQuestions];
@@ -23,7 +23,7 @@ namespace GeniyIdiotConsoleApp
             answers[3] = 60;
             answers[4] = 2;
             return answers;
-        }
+        }// Список ответов
         static int[] GetRandoms(int countQuestions)
         {
             int[] randoms = new int[countQuestions];
@@ -41,7 +41,7 @@ namespace GeniyIdiotConsoleApp
                 randoms[intermediateRandom] = rnd;
             }
             return randoms;
-        }
+        }// Генерация случайного порядка для вопросов
         static string[] GetDiagnose(int countQuestions)
         {
             string[] diagnose = new string[countQuestions + 1];
@@ -52,13 +52,13 @@ namespace GeniyIdiotConsoleApp
             diagnose[4] = "талант";
             diagnose[5] = "гений";
             return diagnose;
-        }
+        }// Список диагнозов
         static void Main()
         {
             bool restart = true;
             while (restart == true)
             {
-                int countQuestions = 5;
+                int countQuestions = 5; 
                 int countRigthAnswer = 0;
                 string[] questions = GetQuestions(countQuestions);
                 int[] answers = GetAnswers(countQuestions);
@@ -82,8 +82,6 @@ namespace GeniyIdiotConsoleApp
                 if (escapeCommand == "Нет")
                     restart = false;
             }
-
         }
-
     }
 }
