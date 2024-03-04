@@ -4,26 +4,26 @@ namespace GeniyIdiotConsoleApp
 {
     class Program
     {
-        static string[] GetQuestions(int countQuestions)
+        static string[] GetQuestions()
         {
-            string[] questions = new string[countQuestions];
-            questions[0] = "Сколько будет два плюс два умноженное на два?";
-            questions[1] = "Бревно нужно распилить на 10 частей. Сколько распилов нужно сделать?";
-            questions[2] = "На двух руках 10 пальцев. Сколько пальцев на 5 руках?";
-            questions[3] = "Укол делают каждые полчаса. Сколько нужно минут, чтобы сделать три укола?";
-            questions[4] = "Пять свечей горело, две потухли. Сколько свечей осталось?";
+            string[] readText = File.ReadAllLines(@"QuestionsAndAnswers.txt");//считываем из файла построчно вопросы
+            string[] questions = new string[readText.Length / 2];
+            for (int i = 0, j = 0; i < readText.Length; i = i + 2, j++)
+            {
+                questions[j] = readText[i];
+            }
             return questions;
-        }// Список вопросов
-        static int[] GetAnswers(int countQuestions)
+        }
+        static int[] GetAnswers()
         {
-            int[] answers = new int[countQuestions];
-            answers[0] = 6;
-            answers[1] = 9;
-            answers[2] = 25;
-            answers[3] = 60;
-            answers[4] = 2;
+            string[] readText = File.ReadAllLines(@"QuestionsAndAnswers.txt");//считываем из файла построчно ответы
+            int[] answers = new int[readText.Length / 2];
+            for (int i = 1, j = 0; i < readText.Length; i = i + 2, j++)
+            {
+                answers[j] = Convert.ToInt32(readText[i]);
+            }
             return answers;
-        }// Список ответов
+        }
         static int[] GetRandoms(int countQuestions)
         {
             int[] randoms = new int[countQuestions];
@@ -42,27 +42,26 @@ namespace GeniyIdiotConsoleApp
             }
             return randoms;
         }// Генерация случайного порядка для вопросов
-        static string[] GetDiagnose(int countQuestions)
+        static string[] GetDiagnose()
         {
-            string[] diagnose = new string[countQuestions + 1];
-            diagnose[0] = "кретин";
-            diagnose[1] = "идиот";
-            diagnose[2] = "дурак";
-            diagnose[3] = "нормальный";
-            diagnose[4] = "талант";
-            diagnose[5] = "гений";
+            string[] readText = File.ReadAllLines(@"Diagnose.txt");//считываем из файла построчно диагнозы
+            string[] diagnose = new string[readText.Length];
+            for (int i = 0; i < readText.Length; i++)
+            {
+                diagnose[i] = (readText[i]);
+            }
             return diagnose;
-        }// Список диагнозов
+        }
         static void Main()
         {
             bool restart = true;
             while (restart == true)
             {
-                int countQuestions = 5; 
                 int countRigthAnswer = 0;
-                string[] questions = GetQuestions(countQuestions);
-                int[] answers = GetAnswers(countQuestions);
-                string[] diagnose = GetDiagnose(countQuestions);
+                string[] questions = GetQuestions();
+                int[] answers = GetAnswers();
+                string[] diagnose = GetDiagnose();
+                int countQuestions = answers.Length;
                 int[] randoms = GetRandoms(countQuestions);
                 Console.WriteLine("Введите имя пользователя");
                 string userName = Console.ReadLine();
@@ -77,9 +76,9 @@ namespace GeniyIdiotConsoleApp
                 }
                 Console.WriteLine($"Количество правильных ответов: {countRigthAnswer}");
                 Console.WriteLine($"{userName}! Ваш диагноз: {diagnose[countRigthAnswer]}");
-                Console.WriteLine($"{userName}! Хотите пройти тест еще раз? введите Да или Нет");
+                Console.WriteLine($"{userName}! Хотите пройти тест еще раз? Dведите Да или Нет");
                 string escapeCommand = Console.ReadLine();
-                if (escapeCommand == "Нет")
+                if (escapeCommand != "Да")
                     restart = false;
             }
         }
