@@ -78,8 +78,12 @@ namespace GeniyIdiotConsoleApp
                 Console.WriteLine($"{userName}! Ваш диагноз: {diagnose[countRigthAnswer]}");
                 Console.WriteLine($"{userName}! Хотите пройти тест еще раз? Dведите Да или Нет");
                 string escapeCommand = Console.ReadLine();
-                if (escapeCommand != "Да")
+                if (escapeCommand == "Нет")
                     restart = false;
+                else if (escapeCommand == "Да")
+                    continue;
+                else
+                    Console.WriteLine("Некорректный ввод")
             }
         }
     }
