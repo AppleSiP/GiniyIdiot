@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 
 namespace GeniyIdiotConsoleApp
 {
@@ -24,7 +25,7 @@ namespace GeniyIdiotConsoleApp
             }
             return answers;
         }
-        static int[] GetRandoms(int countQuestions)
+        static int[] GetRandoms(int countQuestions) //Генерация случайного порядка для вопросов
         {
             int[] randoms = new int[countQuestions];
             for(int j = 0; j < countQuestions; j++)
@@ -41,7 +42,7 @@ namespace GeniyIdiotConsoleApp
                 randoms[intermediateRandom] = rnd;
             }
             return randoms;
-        }// Генерация случайного порядка для вопросов
+        }// 
         static string[] GetDiagnose()
         {
             string[] readText = File.ReadAllLines(@"Diagnose.txt");//считываем из файла построчно диагнозы
@@ -54,8 +55,7 @@ namespace GeniyIdiotConsoleApp
         }
         static void Main()
         {
-            bool restart = true;
-            while (restart == true)
+            while (true)
             {
                 int countRigthAnswer = 0;
                 string[] questions = GetQuestions();
@@ -65,6 +65,9 @@ namespace GeniyIdiotConsoleApp
                 int[] randoms = GetRandoms(countQuestions);
                 Console.WriteLine("Введите имя пользователя");
                 string userName = Console.ReadLine();
+                userName = char.ToUpper(userName[0]) + userName.Remove(0, 1); // Обращение всегда с Заглавной буквы
+                Console.WriteLine("На вопрос даётся 10 сек. Если готовы нажмите клавишу ENTER.");
+                while (Console.ReadKey().Key != ConsoleKey.Enter) { }//считали клавишу и сравнили с ENTER
                 for (int i = 0; i < countQuestions; i++)
                 {
                     Console.WriteLine($"Вопрос №{i + 1}");
@@ -76,14 +79,18 @@ namespace GeniyIdiotConsoleApp
                 }
                 Console.WriteLine($"Количество правильных ответов: {countRigthAnswer}");
                 Console.WriteLine($"{userName}! Ваш диагноз: {diagnose[countRigthAnswer]}");
-                Console.WriteLine($"{userName}! Хотите пройти тест еще раз? Dведите Да или Нет");
+                Console.WriteLine($"{userName}! Хотите пройти тест еще раз? Введите Да или Нет");
                 string escapeCommand = Console.ReadLine();
-                if (escapeCommand == "Нет")
-                    restart = false;
-                else if (escapeCommand == "Да")
+                if (escapeCommand == "Да" || escapeCommand == "Lf" || escapeCommand == "да" || escapeCommand == "lf")
                     continue;
+                else if (escapeCommand == "Нет" || escapeCommand == "Ytn" || escapeCommand == "ytn" ||escapeCommand == "нет")
+                    break;
                 else
-                    Console.WriteLine("Некорректный ввод")
+                {
+                    Console.WriteLine("Некорректный ввод, нажмите ESC чтоб закрыть!");
+                    while (Console.ReadKey().Key != ConsoleKey.Escape) { }
+                    break;
+                }
             }
         }
     }
