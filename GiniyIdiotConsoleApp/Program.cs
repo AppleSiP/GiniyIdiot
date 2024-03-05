@@ -24,7 +24,7 @@ namespace GeniyIdiotConsoleApp
             answers[4] = 2;
             return answers;
         }// Список ответов
-        static int[] GetRandoms(int countQuestions)
+        static int[] Shuffle(int countQuestions)
         {
             int[] randoms = new int[countQuestions];
             for(int j = 0; j < countQuestions; j++)
@@ -55,17 +55,17 @@ namespace GeniyIdiotConsoleApp
         }// Список диагнозов
         static void Main()
         {
-            bool restart = true;
-            while (restart == true)
+            Console.WriteLine("Введите имя пользователя");
+            string userName = Console.ReadLine();
+            userName = char.ToUpper(userName[0]) + userName.Remove(0, 1); // Обращение всегда с Заглавной буквы
+            while (true)
             {
                 int countQuestions = 5; 
                 int countRigthAnswer = 0;
                 string[] questions = GetQuestions(countQuestions);
                 int[] answers = GetAnswers(countQuestions);
                 string[] diagnose = GetDiagnose(countQuestions);
-                int[] randoms = GetRandoms(countQuestions);
-                Console.WriteLine("Введите имя пользователя");
-                string userName = Console.ReadLine();
+                int[] randoms = Shuffle(countQuestions);
                 for (int i = 0; i < countQuestions; i++)
                 {
                     Console.WriteLine($"Вопрос №{i + 1}");
@@ -79,8 +79,15 @@ namespace GeniyIdiotConsoleApp
                 Console.WriteLine($"{userName}! Ваш диагноз: {diagnose[countRigthAnswer]}");
                 Console.WriteLine($"{userName}! Хотите пройти тест еще раз? введите Да или Нет");
                 string escapeCommand = Console.ReadLine();
-                if (escapeCommand == "Нет")
-                    restart = false;
+                if (escapeCommand == "Да" || escapeCommand == "да" || escapeCommand == "Lf" || escapeCommand == "lf")
+                    continue;
+                else if (escapeCommand == "Нет" || escapeCommand == "нет" || escapeCommand == "Ytn" || escapeCommand == "ytn")
+                    break;
+                else
+                {
+                    Console.WriteLine("Некорректный ввод");
+                    break;
+                }
             }
         }
     }
