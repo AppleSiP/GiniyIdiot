@@ -25,11 +25,11 @@ namespace GeniyIdiotConsoleApp
             }
             return answers;
         }
-        static int[] GetRandoms(int countQuestions) //Генерация случайного порядка для вопросов
+        static int[] Shuffle(int countQuestions) //Генерация случайного порядка для вопросов
         {
             int[] randoms = new int[countQuestions];
             for(int j = 0; j < countQuestions; j++)
-   {
+            {
                 randoms[j] = j;
             }
             Random random = new Random();
@@ -55,6 +55,9 @@ namespace GeniyIdiotConsoleApp
         }
         static void Main()
         {
+            Console.WriteLine("Введите имя пользователя");
+            string userName = Console.ReadLine();
+            userName = char.ToUpper(userName[0]) + userName.Remove(0, 1); // Обращение всегда с Заглавной буквы
             while (true)
             {
                 int countRigthAnswer = 0;
@@ -62,10 +65,7 @@ namespace GeniyIdiotConsoleApp
                 int[] answers = GetAnswers();
                 string[] diagnose = GetDiagnose();
                 int countQuestions = answers.Length;
-                int[] randoms = GetRandoms(countQuestions);
-                Console.WriteLine("Введите имя пользователя");
-                string userName = Console.ReadLine();
-                userName = char.ToUpper(userName[0]) + userName.Remove(0, 1); // Обращение всегда с Заглавной буквы
+                int[] randoms = Shuffle(countQuestions);
                 Console.WriteLine("На вопрос даётся 10 сек. Если готовы нажмите клавишу ENTER.");
                 while (Console.ReadKey().Key != ConsoleKey.Enter) { }//считали клавишу и сравнили с ENTER
                 for (int i = 0; i < countQuestions; i++)
