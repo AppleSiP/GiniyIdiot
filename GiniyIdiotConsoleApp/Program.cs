@@ -81,9 +81,9 @@ namespace GeniyIdiotConsoleApp
                 Console.WriteLine($"{userName}! Ваш диагноз: {diagnose[countRigthAnswer]}");
                 Console.WriteLine($"{userName}! Хотите пройти тест еще раз? Введите Да или Нет");
                 string escapeCommand = Console.ReadLine();
-                if (escapeCommand == "Да" || escapeCommand == "Lf" || escapeCommand == "да" || escapeCommand == "lf")
+                if (escapeCommand == "Да" || escapeCommand == "Lf" || escapeCommand == "да" || escapeCommand == "lf" || escapeCommand == "ДА" || escapeCommand == "LF")
                     continue;
-                else if (escapeCommand == "Нет" || escapeCommand == "Ytn" || escapeCommand == "ytn" ||escapeCommand == "нет")
+                else if (escapeCommand == "Нет" || escapeCommand == "Ytn" || escapeCommand == "ytn" ||escapeCommand == "нет" || escapeCommand == "YTN" || escapeCommand == "НЕТ")
                     break;
                 else
                 {
