@@ -87,8 +87,7 @@ namespace GeniyIdiotConsoleApp
                     break;
                 else
                 {
-                    Console.WriteLine("Некорректный ввод, нажмите ESC чтоб закрыть!");
-                    while (Console.ReadKey().Key != ConsoleKey.Escape) { }
+                    Console.WriteLine("Некорректный ввод!");
                     break;
                 }
             }
