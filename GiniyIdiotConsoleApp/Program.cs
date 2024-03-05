@@ -68,6 +68,7 @@ namespace GeniyIdiotConsoleApp
                 int[] randoms = Shuffle(countQuestions);
                 Console.WriteLine("На вопрос даётся 10 сек. Если готовы нажмите клавишу ENTER.");
                 while (Console.ReadKey().Key != ConsoleKey.Enter) { }//считали клавишу и сравнили с ENTER
+                //Здесь предполагается таймер
                 for (int i = 0; i < countQuestions; i++)
                 {
                     Console.WriteLine($"Вопрос №{i + 1}");
@@ -81,9 +82,11 @@ namespace GeniyIdiotConsoleApp
                 Console.WriteLine($"{userName}! Ваш диагноз: {diagnose[countRigthAnswer]}");
                 Console.WriteLine($"{userName}! Хотите пройти тест еще раз? Введите Да или Нет");
                 string escapeCommand = Console.ReadLine();
-                if (escapeCommand == "Да" || escapeCommand == "Lf" || escapeCommand == "да" || escapeCommand == "lf" || escapeCommand == "ДА" || escapeCommand == "LF")
+                if (escapeCommand == "Да" || escapeCommand == "Lf" || escapeCommand == "да" || 
+                    escapeCommand == "lf" || escapeCommand == "ДА" || escapeCommand == "LF")
                     continue;
-                else if (escapeCommand == "Нет" || escapeCommand == "Ytn" || escapeCommand == "ytn" ||escapeCommand == "нет" || escapeCommand == "YTN" || escapeCommand == "НЕТ")
+                else if (escapeCommand == "Нет" || escapeCommand == "Ytn" || escapeCommand == "ytn" || 
+                    escapeCommand == "нет" || escapeCommand == "YTN" || escapeCommand == "НЕТ")
                     break;
                 else
                 {
