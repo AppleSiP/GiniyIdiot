@@ -8,11 +8,11 @@ namespace GeniyIdiotConsoleApp
     {
         static string[] GetQuestions()
         {
-            string curFile = @"QuestionsAndAnswers.txt";
+            string curFile = @"..\..\..\QuestionsAndAnswers.txt";
             bool existsDataFile = File.Exists(curFile);
             if (existsDataFile)
             {
-                string[] readText = File.ReadAllLines(@"QuestionsAndAnswers.txt");//считываем из файла построчно вопросы
+                string[] readText = File.ReadAllLines(@"..\..\..\QuestionsAndAnswers.txt");//считываем из файла построчно вопросы
                 string[] questions = new string[readText.Length / 2];
                 for (int i = 0, j = 0; i < readText.Length; i = i + 2, j++)
                 {
@@ -28,11 +28,11 @@ namespace GeniyIdiotConsoleApp
         }
         static int[] GetAnswers()
         {
-            string curFile = @"QuestionsAndAnswers.txt";
+            string curFile = @"..\..\..\QuestionsAndAnswers.txt";
             bool existsDataFile = File.Exists(curFile);
             if (existsDataFile)
             {
-                string[] readText = File.ReadAllLines(@"QuestionsAndAnswers.txt");//считываем из файла построчно ответы
+                string[] readText = File.ReadAllLines(@"..\..\..\QuestionsAndAnswers.txt");//считываем из файла построчно ответы
                 int[] answers = new int[readText.Length / 2];
                 for (int i = 1, j = 0; i < readText.Length; i = i + 2, j++)
                 {
@@ -66,11 +66,11 @@ namespace GeniyIdiotConsoleApp
         }// 
         static string[] GetDiagnose()
         {
-            string curFile = @"QuestionsAndAnswers.txt";
+            string curFile = @"..\..\..\QuestionsAndAnswers.txt";
             bool existsDataFile = File.Exists(curFile);
             if (existsDataFile)
             {
-                string[] readText = File.ReadAllLines(@"Diagnose.txt");//считываем из файла построчно диагнозы
+                string[] readText = File.ReadAllLines(@"..\..\..\Diagnose.txt");//считываем из файла построчно диагнозы
                 string[] diagnose = new string[readText.Length];
                 for (int i = 0; i < readText.Length; i++)
                 {
@@ -78,7 +78,7 @@ namespace GeniyIdiotConsoleApp
                 }
                 return diagnose;
             }
-             else
+            else
             {
                 string[] diagnose = new string[0];
                 return diagnose;
@@ -106,7 +106,7 @@ namespace GeniyIdiotConsoleApp
                     {
                         Console.WriteLine($"Вопрос №{i + 1}");
                         Console.WriteLine(questions[randoms[i]]);
-                        int userAnswer = Convert.ToInt32(Console.ReadLine());
+                        int userAnswer = Convert.ToInt32(Console.ReadLine());// Предусмотреть некорректный ввод(не цифры)
                         int rigthAnswer = answers[randoms[i]];
                         if (userAnswer == rigthAnswer)
                             countRigthAnswer++;
@@ -132,10 +132,7 @@ namespace GeniyIdiotConsoleApp
                     Console.Write("Ошибка! Файлы не найдены!");
                     break;
                 }
-                
-                
             }
         }
     }
 }
-//тестовый комментарий
