@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Formats.Tar;
 using System.Globalization;
 
 namespace GeniyIdiotConsoleApp
@@ -7,6 +8,8 @@ namespace GeniyIdiotConsoleApp
     {
         static string[] GetQuestions()
         {
+            string curFile = @"QuestionsAndAnswers.txt";
+            bool dataFile = File.Exists(curFile);
             string[] readText = File.ReadAllLines(@"QuestionsAndAnswers.txt");//считываем из файла построчно вопросы
             string[] questions = new string[readText.Length / 2];
             for (int i = 0, j = 0; i < readText.Length; i = i + 2, j++)
@@ -17,6 +20,8 @@ namespace GeniyIdiotConsoleApp
         }
         static int[] GetAnswers()
         {
+            string curFile = @"QuestionsAndAnswers.txt";
+            bool dataFile = File.Exists(curFile);
             string[] readText = File.ReadAllLines(@"QuestionsAndAnswers.txt");//считываем из файла построчно ответы
             int[] answers = new int[readText.Length / 2];
             for (int i = 1, j = 0; i < readText.Length; i = i + 2, j++)
@@ -45,6 +50,8 @@ namespace GeniyIdiotConsoleApp
         }// 
         static string[] GetDiagnose()
         {
+            string curFile = @"QuestionsAndAnswers.txt";
+            bool dataFile = File.Exists(curFile);
             string[] readText = File.ReadAllLines(@"Diagnose.txt");//считываем из файла построчно диагнозы
             string[] diagnose = new string[readText.Length];
             for (int i = 0; i < readText.Length; i++)
