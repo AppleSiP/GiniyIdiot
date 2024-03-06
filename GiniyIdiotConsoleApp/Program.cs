@@ -14,7 +14,7 @@ namespace GeniyIdiotConsoleApp
             {
                 string[] readText = File.ReadAllLines(@"..\..\..\QuestionsAndAnswers.txt");//считываем из файла построчно вопросы
                 string[] questions = new string[readText.Length / 2];
-                for (int i = 0, j = 0; i < readText.Length; i = i + 2, j++)
+                for (int i = 0, j = 0; i < readText.Length; i += 2, j++)
                 {
                     questions[j] = readText[i];
                 }
@@ -25,28 +25,28 @@ namespace GeniyIdiotConsoleApp
                 string[] questions = new string[0];
                 return questions;
             }
-        }
-        static int[] GetAnswers()
+        }// возвращает вопросы
+        static double[] GetAnswers() // возвращает ответы// теперь возвращает double
         {
             string curFile = @"..\..\..\QuestionsAndAnswers.txt";
             bool existsDataFile = File.Exists(curFile);
             if (existsDataFile)
             {
                 string[] readText = File.ReadAllLines(@"..\..\..\QuestionsAndAnswers.txt");//считываем из файла построчно ответы
-                int[] answers = new int[readText.Length / 2];
-                for (int i = 1, j = 0; i < readText.Length; i = i + 2, j++)
+                double[] answers = new double[readText.Length / 2];
+                for (int i = 1, j = 0; i < readText.Length; i += 2, j++)
                 {
-                    answers[j] = Convert.ToInt32(readText[i]);
+                    answers[j] = Convert.ToDouble(readText[i]);
                 }
                 return answers;
             }
             else
             {
-                int[] answers = new int[0];
+                double[] answers = new double[0];
                 return answers;
             }
         }
-        static int[] Shuffle(int countQuestions) //Генерация случайного порядка для вопросов
+        static int[] Shuffle(int countQuestions) // Генерация случайного порядка для вопросов
         {
             int[] randoms = new int[countQuestions];
             for(int j = 0; j < countQuestions; j++)
@@ -63,7 +63,7 @@ namespace GeniyIdiotConsoleApp
                 randoms[intermediateRandom] = rnd;
             }
             return randoms;
-        }// 
+        }
         static string[] GetDiagnose()
         {
             string curFile = @"..\..\..\QuestionsAndAnswers.txt";
@@ -83,7 +83,16 @@ namespace GeniyIdiotConsoleApp
                 string[] diagnose = new string[0];
                 return diagnose;
             }
-        }
+        }// возвращает диагнозы
+        static double VerificationAnswer(string userAnswer)
+        {
+            int maxLengthAnswer = 9;
+            if (userAnswer.Length > maxLengthAnswer)
+                userAnswer = userAnswer.Remove(maxLengthAnswer - 1);
+            double correctAnswer;
+            bool statusAnswer = double.TryParse(userAnswer, out correctAnswer);
+            return correctAnswer;
+        }// Проверка на корректный ввод
         static void Main()
         {
             Console.WriteLine("Введите имя пользователя");
@@ -93,7 +102,7 @@ namespace GeniyIdiotConsoleApp
             {
                 int countRigthAnswer = 0;
                 string[] questions = GetQuestions();
-                int[] answers = GetAnswers();
+                double[] answers = GetAnswers();
                 string[] diagnose = GetDiagnose();
                 int countQuestions = answers.Length;
                 int[] randoms = Shuffle(countQuestions);
@@ -106,9 +115,8 @@ namespace GeniyIdiotConsoleApp
                     {
                         Console.WriteLine($"Вопрос №{i + 1}");
                         Console.WriteLine(questions[randoms[i]]);
-                        int userAnswer = Convert.ToInt32(Console.ReadLine());// Предусмотреть некорректный ввод(не цифры)
-                        int rigthAnswer = answers[randoms[i]];
-                        if (userAnswer == rigthAnswer)
+                        string userAnswer = Console.ReadLine();
+                        if (VerificationAnswer(userAnswer) == answers[randoms[i]])
                             countRigthAnswer++;
                     }
                     Console.WriteLine($"Количество правильных ответов: {countRigthAnswer}");
