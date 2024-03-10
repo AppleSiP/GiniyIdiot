@@ -6,47 +6,65 @@ namespace GeniyIdiotConsoleApp
 {
     class Program
     {
-        static string[] GetQuestions()
+        static void Main()
         {
-            string curFile = @"..\..\..\QuestionsAndAnswers.txt";
-            bool existsDataFile = File.Exists(curFile);
-            if (existsDataFile)
+            Console.WriteLine("Введите имя пользователя");
+            string userName = Console.ReadLine();
+            userName = char.ToUpper(userName[0]) + userName.Remove(0, 1);
+            while (true)
             {
-                string[] readText = File.ReadAllLines(@"..\..\..\QuestionsAndAnswers.txt");//считываем из файла построчно вопросы
-                string[] questions = new string[readText.Length / 2];
-                for (int i = 0, j = 0; i < readText.Length; i += 2, j++)
+                int countRigthAnswer = 0;
+                string[,] questionsAndAnswers = GetQuestionsAndAnswers();
+                string[] diagnose = GetDiagnose();
+                int countQuestions = questionsAndAnswers.GetUpperBound(0) + 1;
+                int[] randoms = Shuffle(countQuestions);
+                if (countQuestions > 0 && diagnose.Length > 0)
                 {
-                    questions[j] = readText[i];
+                    for (int i = 0; i < countQuestions; i++)
+                    {
+                        Console.WriteLine($"Вопрос №{i + 1}");
+                        Console.WriteLine(questionsAndAnswers[randoms[i], 0]);
+                        string userAnswer = Console.ReadLine();
+                        if (GetCorrectAnswer(userAnswer) == Math.Round(Convert.ToDouble(questionsAndAnswers[randoms[i], 1]), 2))
+                        {
+                            countRigthAnswer++;
+                        }
+                    }
+                    Console.WriteLine($"Количество правильных ответов: {countRigthAnswer}");
+                    Console.WriteLine($"{userName}! Ваш диагноз: {diagnose[countRigthAnswer]}");
+                    if (!GetUserChoise("Хотите начать сначала?"))
+                        break;
                 }
-                return questions;
-            }
-            else
-            {
-                string[] questions = new string[0];
-                return questions;
-            }
-        }// возвращает вопросы
-        static double[] GetAnswers() // возвращает ответы// теперь возвращает double
-        {
-            string curFile = @"..\..\..\QuestionsAndAnswers.txt";
-            bool existsDataFile = File.Exists(curFile);
-            if (existsDataFile)
-            {
-                string[] readText = File.ReadAllLines(@"..\..\..\QuestionsAndAnswers.txt");//считываем из файла построчно ответы
-                double[] answers = new double[readText.Length / 2];
-                for (int i = 1, j = 0; i < readText.Length; i += 2, j++)
+                else
                 {
-                    answers[j] = Convert.ToDouble(readText[i]);
+                    Console.Write("Ошибка! Файлы не найдены!");
+                    break;
                 }
-                return answers;
-            }
-            else
-            {
-                double[] answers = new double[0];
-                return answers;
             }
         }
-        static int[] Shuffle(int countQuestions) // Генерация случайного порядка для вопросов
+        static string[,] GetQuestionsAndAnswers()
+        {
+            string curFile = @"..\..\..\QuestionsAndAnswers.txt";
+            bool existsDataFile = File.Exists(curFile);
+            if (existsDataFile)
+            {
+                string[] readText = File.ReadAllLines(@"..\..\..\QuestionsAndAnswers.txt");
+                string[,] questionsAndAnswers = new string[readText.Length, 2];
+                for (int i = 0; i < readText.Length; i++)
+                {
+                    questionsAndAnswers[i,0] = (readText[i].Remove(0, 8)).Split(" Ответ:")[0];
+                    questionsAndAnswers[i,1] = (readText[i].Remove(0, 8)).Split(" Ответ:")[1];
+                }
+                
+                return questionsAndAnswers;
+            }
+            else
+            {
+                string[,] questionsAndAnswers = new string[0,0];
+                return questionsAndAnswers;
+            }
+        }
+        static int[] Shuffle(int countQuestions) 
         {
             int[] randoms = new int[countQuestions];
             for(int j = 0; j < countQuestions; j++)
@@ -83,68 +101,31 @@ namespace GeniyIdiotConsoleApp
                 string[] diagnose = new string[0];
                 return diagnose;
             }
-        }// возвращает диагнозы
-        static double VerificationAnswer(string userAnswer)
+        }
+        static double GetCorrectAnswer(string userAnswer)
         {
-            int maxLengthAnswer = 9;
+            int maxLengthAnswer = Convert.ToString(double.MaxValue).Length-1;
             if (userAnswer.Length > maxLengthAnswer)
             {
                 userAnswer = userAnswer.Remove(maxLengthAnswer - 1);
             }
             double correctAnswer;
             bool statusAnswer = double.TryParse(userAnswer, out correctAnswer);
-            return correctAnswer;
-        }// Проверка на корректный ввод
-        static void Main() // начинать программу с main
+            return Math.Round(correctAnswer, 2);
+        }
+        static bool GetUserChoise(string message)
         {
-            Console.WriteLine("Введите имя пользователя");
-            string userName = Console.ReadLine();
-            userName = char.ToUpper(userName[0]) + userName.Remove(0, 1); // Обращение всегда с Заглавной буквы
-            while (true)
+            while(true)
             {
-                int countRigthAnswer = 0;
-                string[] questions = GetQuestions();
-                double[] answers = GetAnswers();
-                string[] diagnose = GetDiagnose();
-                int countQuestions = answers.Length;
-                int[] randoms = Shuffle(countQuestions);
-                if (answers.Length > 0 && diagnose.Length > 0) 
+                Console.WriteLine($"{message} Введите Да или Нет");
+                string escapeCommand = Console.ReadLine().ToLower();
+                if (escapeCommand == "да" || escapeCommand == "lf")
                 {
-                    Console.WriteLine("На вопрос даётся 10 сек. Если готовы нажмите клавишу ENTER.");
-                    while (Console.ReadKey().Key != ConsoleKey.Enter) { }//считали клавишу и сравнили с ENTER
-                    //Здесь предполагается таймер
-                    for (int i = 0; i < countQuestions; i++)
-                    {
-                        Console.WriteLine($"Вопрос №{i + 1}");//выделить в отдельный метод
-                        Console.WriteLine(questions[randoms[i]]);
-                        string userAnswer = Console.ReadLine();
-                        if (VerificationAnswer(userAnswer) == answers[randoms[i]])
-                        {
-                            countRigthAnswer++;
-                        }
-                    }
-                    Console.WriteLine($"Количество правильных ответов: {countRigthAnswer}");
-                    Console.WriteLine($"{userName}! Ваш диагноз: {diagnose[countRigthAnswer]}");
-                    Console.WriteLine($"{userName}! Хотите пройти тест еще раз? Введите Да или Нет");//Вынети в отдельный метод
-                    string escapeCommand = Console.ReadLine().ToLower();// привести к одному регистру
-                    if (escapeCommand == "да" || escapeCommand == "lf")
-                    {
-                        continue;
-                    }
-                    else if (escapeCommand == "нет" || escapeCommand == "ytn")
-                    {
-                        break;
-                    }
-                    else
-                    {
-                        Console.WriteLine("Некорректный ввод!"); // зациклить пока не будет ДА или НЕТ
-                        break;
-                    }
+                    return true;
                 }
-                else
+                if (escapeCommand == "нет" || escapeCommand == "ytn")
                 {
-                    Console.Write("Ошибка! Файлы не найдены!");//Не закрывать сразу, например через 10 секунд
-                    break;
+                    return false;
                 }
             }
         }
