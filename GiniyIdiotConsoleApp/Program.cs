@@ -88,12 +88,14 @@ namespace GeniyIdiotConsoleApp
         {
             int maxLengthAnswer = 9;
             if (userAnswer.Length > maxLengthAnswer)
+            {
                 userAnswer = userAnswer.Remove(maxLengthAnswer - 1);
+            }
             double correctAnswer;
             bool statusAnswer = double.TryParse(userAnswer, out correctAnswer);
             return correctAnswer;
         }// Проверка на корректный ввод
-        static void Main()
+        static void Main() // начинать программу с main
         {
             Console.WriteLine("Введите имя пользователя");
             string userName = Console.ReadLine();
@@ -113,31 +115,35 @@ namespace GeniyIdiotConsoleApp
                     //Здесь предполагается таймер
                     for (int i = 0; i < countQuestions; i++)
                     {
-                        Console.WriteLine($"Вопрос №{i + 1}");
+                        Console.WriteLine($"Вопрос №{i + 1}");//выделить в отдельный метод
                         Console.WriteLine(questions[randoms[i]]);
                         string userAnswer = Console.ReadLine();
                         if (VerificationAnswer(userAnswer) == answers[randoms[i]])
+                        {
                             countRigthAnswer++;
+                        }
                     }
                     Console.WriteLine($"Количество правильных ответов: {countRigthAnswer}");
                     Console.WriteLine($"{userName}! Ваш диагноз: {diagnose[countRigthAnswer]}");
-                    Console.WriteLine($"{userName}! Хотите пройти тест еще раз? Введите Да или Нет");
-                    string escapeCommand = Console.ReadLine();
-                    if (escapeCommand == "Да" || escapeCommand == "Lf" || escapeCommand == "да" ||
-                        escapeCommand == "lf" || escapeCommand == "ДА" || escapeCommand == "LF")
+                    Console.WriteLine($"{userName}! Хотите пройти тест еще раз? Введите Да или Нет");//Вынети в отдельный метод
+                    string escapeCommand = Console.ReadLine().ToLower();// привести к одному регистру
+                    if (escapeCommand == "да" || escapeCommand == "lf")
+                    {
                         continue;
-                    else if (escapeCommand == "Нет" || escapeCommand == "Ytn" || escapeCommand == "ytn" ||
-                        escapeCommand == "нет" || escapeCommand == "YTN" || escapeCommand == "НЕТ")
+                    }
+                    else if (escapeCommand == "нет" || escapeCommand == "ytn")
+                    {
                         break;
+                    }
                     else
                     {
-                        Console.WriteLine("Некорректный ввод!");
+                        Console.WriteLine("Некорректный ввод!"); // зациклить пока не будет ДА или НЕТ
                         break;
                     }
                 }
                 else
                 {
-                    Console.Write("Ошибка! Файлы не найдены!");
+                    Console.Write("Ошибка! Файлы не найдены!");//Не закрывать сразу, например через 10 секунд
                     break;
                 }
             }
